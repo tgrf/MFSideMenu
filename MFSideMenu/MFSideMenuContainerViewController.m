@@ -229,8 +229,8 @@ typedef enum {
     
     [self addChildViewController:_centerViewController];
     [self.view addSubview:[_centerViewController view]];
-    [((UIViewController *)_centerViewController) view].frame = (CGRect){.origin = origin, .size=centerViewController.view.frame.size};
-    
+    [((UIViewController *)_centerViewController) view].frame = CGRectMake(origin.x, origin.y,
+                                                                          self.view.bounds.size.width, self.view.bounds.size.height);
     [_centerViewController didMoveToParentViewController:self];
     
     if(self.shadow) {
@@ -414,7 +414,8 @@ typedef enum {
 
 - (void) setLeftSideMenuFrameToClosedPosition {
     if(!self.leftMenuViewController) return;
-    CGRect leftFrame = [self.leftMenuViewController view].frame;
+    CGRect oldFrame = [self.leftMenuViewController view].frame;
+    CGRect leftFrame = CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width, self.view.bounds.size.height);
     leftFrame.size.width = self.leftMenuWidth;
     leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
@@ -424,7 +425,8 @@ typedef enum {
 
 - (void) setRightSideMenuFrameToClosedPosition {
     if(!self.rightMenuViewController) return;
-    CGRect rightFrame = [self.rightMenuViewController view].frame;
+    CGRect oldFrame = [self.rightMenuViewController view].frame;
+    CGRect rightFrame = CGRectMake(oldFrame.origin.x, oldFrame.origin.y, oldFrame.size.width, self.view.bounds.size.height);
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = self.menuContainerView.frame.size.width - self.rightMenuWidth;
